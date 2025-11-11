@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOTEX AI ULTRA PREDICTOR</title>
+<style>
+body {
+    background-color: #000;
+    color: #00ffcc;
+    font-family: "Courier New", monospace;
+    text-align: center;
+    margin-top: 60px;
+}
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    border: 2px solid #00ffcc;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #00ffcc;
+}
+h1 {
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+}
+button {
+    background-color: #111;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    padding: 10px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #00ffcc;
+    color: #000;
+}
+.loader {
+    border: 3px solid #00ffcc;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 10px;
+}
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+.output {
+    margin-top: 25px;
+    font-size: 20px;
+    line-height: 1.6;
+}
+.footer {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #666;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🔮 NOTEX AI ULTRA PREDICTOR v4</h1>
+    <p id="status">🛰️ Connecting to Server...</p>
+    <button onclick="getPrediction()">Get Prediction</button>
+    <div id="result" class="output"></div>
+    <div class="footer">© 2025 NOTEX SYSTEM | Hacker Mode Active 🧠</div>
+</div>
+
+<script>
+async function getPrediction() {
+    document.getElementById('status').innerHTML = "Connecting... <span class='loader'></span>";
+    document.getElementById('result').innerHTML = "";
+    try {
+        const res = await fetch("/predict");
+        const data = await res.json();
+        if (data.error) {
+            document.getElementById('status').innerText = data.error;
+        } else {
+            document.getElementById('status').innerText = data.status;
+            document.getElementById('result').innerHTML = `
+                <p>🧩 Last 4 Numbers: <b>${data.nums.join(', ')}</b></p>
+                <p>🎯 Prediction: <b>${data.prediction}</b></p>
+                <p>📊 Confidence: <b>${data.confidence}</b></p>
+                <p>⏰ Time: ${data.time}</p>
+            `;
+        }
+    } catch (e) {
+        document.getElementById('status').innerText = "❌ Connection Error";
+    }
+}
+</script>
+</body>
+</html>
